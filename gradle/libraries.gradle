@@ -1,0 +1,31 @@
+// 全局变量定义
+ext {
+	springBootVersion = '1.5.4.RELEASE'
+	springVersion = '4.3.9.RELEASE'
+	jerseyVersion = '2.26-b05'
+	
+	mysqlJDBCVersion = '5.1.42'
+	junitVersion = '4.12'
+
+	libraries = [
+		// Spring Boot
+		spring_boot_starter_web: "org.springframework.boot:spring-boot-starter-web:${springBootVersion}",
+		spring_boot_starter_jetty: "org.springframework.boot:spring-boot-starter-jetty:${springBootVersion}",
+		spring_boot_starter_jersey: "org.springframework.boot:spring-boot-starter-jersey:${springBootVersion}",
+		spring_boot_starter_test: "org.springframework.boot:spring-boot-starter-test:${springBootVersion}",
+		
+		//Spring Core
+		spring_test: "org.springframework:spring-test:${springVersion}",
+		
+
+		// Jersey
+		jersey_servlet: "org.glassfish.jersey.containers:jersey-container-servlet:${jerseyVersion}",
+		jersey_jetty_servlet: "org.glassfish.jersey.containers:jersey-container-jetty-servlet:${jerseyVersion}",
+		jersey_jetty_http: "org.glassfish.jersey.containers:jersey-container-jetty-http:${jerseyVersion}",
+		jersey_client: "org.glassfish.jersey.core:jersey-client:${jerseyVersion}",
+		jersey_jettey_client: "org.glassfish.jersey.connectors:jersey-jetty-connector:${jerseyVersion}",
+		
+		// MySQL JDBC
+		mysql_jdbc: "mysql:mysql-connector-java:${mysqlJDBCVersion}"
+	]
+}
