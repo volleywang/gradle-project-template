@@ -10,42 +10,67 @@ buildscript {
     }
 }
 
-//使用 JOOQ 从数据库表生成 model 类
-task genCode << {
-    def writer = new StringWriter()
-    def xml = new groovy.xml.MarkupBuilder(writer)
-            .configuration('xmlns': 'http://www.jooq.org/xsd/jooq-codegen-3.9.2.xsd') {
-        jdbc() {
-            driver('com.mysql.jdbc.Driver')
-            url('jdbc:mysql://127.0.0.1:3308/testdb?useSSL=false')
-            user('root')
-            password('mysql')
-        }
+project(':module-db-jooq'){
+	// 自动生成的代码单独放在一个代码目录
+	sourceSets {
+		main {
+			java {
+				srcDirs += ['src/main/jooq-gen']
+			}
+		}
+	}
 
-        generator() {
-            database() {
-                name('org.jooq.util.mysql.MySQLDatabase')
-                inputSchema('testdb')
-                includes('.*')
-            }
-            generate() {
-                deprecated(false)
-            }
-            target() {
-                packageName('com.mp.model.jooq')
-                directory("${project.projectDir}/src/main/java")
-            }
-        }
-    }
+	//使用 JOOQ 从数据库表生成 model 类
+	task genCode << {
+		def writer = new StringWriter()
+		def xml = new groovy.xml.MarkupBuilder(writer)
+				.configuration('xmlns': 'http://www.jooq.org/xsd/jooq-codegen-3.9.2.xsd') {
 
-    // Run the code generator
-    // ----------------------
-    org.jooq.util.GenerationTool.main(
-        javax.xml.bind.JAXB.unmarshal(
-            new StringReader(writer.toString()),
-            org.jooq.util.jaxb.Configuration.class
-        )
-    )
+			logging('DEBUG')
 
-    println("Generation Successful >> ${project.projectDir}/src/main/java/")
+			jdbc() {
+				driver('com.mysql.jdbc.Driver')
+				url('jdbc:mysql://127.0.0.1:3308/testdb?useSSL=false')
+				user('root')
+				password('mysql')
+			}
+
+			generator() {
+				//name('org.jooq.util.JavaGenerator')
+
+				database() {
+					name('org.jooq.util.mysql.MySQLDatabase')
+					inputSchema('testdb')
+					includes('.*')
+
+					// includeTables('true') 
+					// includeRoutines('true') 
+					// includePackages('true') 
+					// includeUDTs('true') 
+					// includeSequences('false') 
+					// includePrimaryKeys('false')
+					// includeUniqueKeys('false') 
+					// includeForeignKeys('false')
+				}
+
+				generate() {
+					deprecated(false)
+				}
+
+				target() {
+					packageName('com.mp.model.jooq')
+					directory("${project.projectDir}/src/main/jooq-gen")
+				}
+			}
+		}
+
+		// Run the code generator
+		// ----------------------
+		org.jooq.util.GenerationTool.main(
+			javax.xml.bind.JAXB.unmarshal(
+				new StringReader(writer.toString()),
+				org.jooq.util.jaxb.Configuration.class
+			)
+		)
+	}
 }

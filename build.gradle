@@ -126,6 +126,7 @@ project(':module-db-jooq'){
 		    exclude module: "tomcat-jdbc" 
 		}
 		compile( libraries.hikariCP )
+		compile( libraries.jooq_codegen )
 
 
         //通用运行依赖
