@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.jooq:jooq-codegen:3.9.2'
+        classpath 'mysql:mysql-connector-java:5.1.42'
+    }
+}
+
+//使用 JOOQ 从数据库表生成 model 类
+task genCode << {
+    def writer = new StringWriter()
+    def xml = new groovy.xml.MarkupBuilder(writer)
+            .configuration('xmlns': 'http://www.jooq.org/xsd/jooq-codegen-3.9.2.xsd') {
+        jdbc() {
+            driver('com.mysql.jdbc.Driver')
+            url('jdbc:mysql://127.0.0.1:3308/testdb?useSSL=false')
+            user('root')
+            password('mysql')
+        }
+
+        generator() {
+            database() {
+                name('org.jooq.util.mysql.MySQLDatabase')
+                inputSchema('testdb')
+                includes('.*')
+            }
+            generate() {
+                deprecated(false)
+            }
+            target() {
+                packageName('com.mp.model.jooq')
+                directory("${project.projectDir}/src/main/java")
+            }
+        }
+    }
+
+    // Run the code generator
+    // ----------------------
+    org.jooq.util.GenerationTool.main(
+        javax.xml.bind.JAXB.unmarshal(
+            new StringReader(writer.toString()),
+            org.jooq.util.jaxb.Configuration.class
+        )
+    )
+
+    println("Generation Successful >> ${project.projectDir}/src/main/java/")
+}

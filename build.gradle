@@ -7,25 +7,32 @@
  */
 buildscript{
 	repositories{ 
-	   //依赖Maven仓库
+	    //依赖Maven仓库
 		mavenCentral() 
+		
+		maven
+		{
+		    url "https://plugins.gradle.org/m2/"
+		}
 	}
 	
 	dependencies {   
-	   //使用1.5.4.RELEASE版本的Spring框架
-		classpath('org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE') 
+	    //使用1.5.4.RELEASE版本的Spring框架插件
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE"
+	
+	    //Gradle 的 Node 插件，Web工程专用
+        //https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
+	    classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
 	}
 }
 
 // 全局配置
-apply plugin: 'eclipse'
 apply from: './gradle/libraries.gradle'
-
-// 产品构建版本号
-version = '0.1'
 
 // 项目全局配置
 allprojects{
+	apply plugin: 'eclipse'
+
 	// 全局依赖类库，建议使用Maven，方便搭建本地版本库做产品全局的依赖管理，和产品模块发布和模块依赖管理。
 	repositories {
 	    mavenLocal()
@@ -35,86 +42,168 @@ allprojects{
 			url 'http://maven.aliyun.com/nexus/content/groups/public'  
 		}
 	}
+
+	// 产品构建版本号
+	group = 'myproject.template'
+   	version =  '0.0.1-SNAPSHOT'
 }
 
-// 所有子项目（组件component）的通用配置
-subprojects {
+// 所有子项目的通用配置
+configure(subprojects - project(':module-web-portal-vue')) {subproject ->
+	apply plugin: 'java'
+
+	jar {
+		baseName = subproject.name
+
+		manifest.attributes["Created-By"] = "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
+		manifest.attributes["Implementation-Title"] = subproject.name
+		manifest.attributes["Implementation-Version"] = subproject.version
+	}
+
+	compileJava.options*.compilerArgs = [
+		"-Xlint:serial", "-Xlint:varargs", "-Xlint:cast", "-Xlint:classfile",
+		"-Xlint:dep-ann", "-Xlint:divzero", "-Xlint:empty", "-Xlint:finally",
+		"-Xlint:overrides", "-Xlint:path", "-Xlint:processing", "-Xlint:static",
+		"-Xlint:try", "-Xlint:fallthrough", "-Xlint:rawtypes", "-Xlint:deprecation",
+		"-Xlint:unchecked", "-Xlint:-options", "-Werror"
+	]
+
+	compileTestJava.options*.compilerArgs = [
+		"-Xlint:serial", "-Xlint:-varargs", "-Xlint:cast", "-Xlint:classfile",
+		"-Xlint:dep-ann", "-Xlint:divzero", "-Xlint:empty", "-Xlint:finally",
+		"-Xlint:overrides", "-Xlint:path", "-Xlint:processing", "-Xlint:static",
+		"-Xlint:try", "-Xlint:-fallthrough", "-Xlint:-rawtypes", "-Xlint:-deprecation",
+		"-Xlint:-unchecked", "-Xlint:-options"]
+
+	compileJava {
+		sourceCompatibility = 1.8
+		targetCompatibility = 1.8
+		options.encoding = 'UTF-8'
+	}
+
+	compileTestJava {
+		sourceCompatibility = 1.8
+		targetCompatibility = 1.8
+		options.encoding = 'UTF-8'
+		options.compilerArgs += "-parameters"
+	}
+
+	dependencies {
+		// 通用编译依赖
+		compile( libraries.spring_boot_starter_logging )
+		compile( libraries.spring_boot_starter_jooq )
+
+		// 测试编译依赖
+		testCompile(libraries.spring_boot_starter_test)
+		testCompile(libraries.spring_test)
+	}
+
+	// 递归输出所有项目的依赖树，便于分析依赖潜在问题
+	// gradle -q project:allDeps --configuration compile
+    task allDeps(type: DependencyReportTask) {}
 }
 
 /*
  *  子项目根据技术栈不同配置不同的依赖和构建环境
  */
-
-// 领域实体组件，主要涉及数据持久化和业务基本服务能力构建
-// Hibernate + Spring
-project(':module-iam'){
-	apply plugin: 'eclipse'
-	apply plugin: 'java'
-
-	// java编译版本号
-	sourceCompatibility = 1.8
-	// java运行版本号
-	targetCompatibility = 1.8
-
+// 领域实体组件，主要涉及业务基本服务能力构建
+configure([project(':module-iam'), project(':module-db-jooq')]){
 	dependencies {
 		// 通用编译依赖
 		//compile('org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE')
 
-		//通用运行依赖
-		runtime( libraries.mysql_jdbc )
-
 		// 测试编译依赖
 		//testCompile('org.springframework.boot:spring-boot-starter-test:1.5.4.RELEASE')
-
-		// 测试运行依赖
-		//        testRuntime()
 	}
 }
 
+// 数据库持久层，主要涉及数据持久化基本能力的构建
+// JOOQ
+project(':module-db-jooq'){
+    dependencies {
+        // 通用编译依赖
+		compile( libraries.spring_boot_starter_jdbc ){ 
+		    exclude module: "tomcat-jdbc" 
+		}
+		compile( libraries.hikariCP )
+
+
+        //通用运行依赖
+        runtime( libraries.mysql_jdbc )
+    }
+}
+
 // 边界服务组件，主要涉及模块或组建对外开放服务的能力构建
-// REST + Spring
+// Spring-Boot + jetty + jersey
 project(':module-service-rest-jersey'){
-	apply plugin: 'eclipse-wtp'
-	apply plugin: 'java'
-	apply plugin: 'war'
-	apply plugin: 'spring-boot'
-	apply plugin: 'jetty'
-    //apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
-	
-	// java编译版本号
-	sourceCompatibility = 1.8
-	// java运行版本号
-	targetCompatibility = 1.8
+	apply plugin: 'org.springframework.boot'
 
 	dependencies {
 		// 通用编译依赖
 		compile( libraries.spring_boot_starter_web ){ 
 		    exclude module: "spring-boot-starter-tomcat" 
+		    //exclude module: "spring-web"
+		    //exclude module: "spring-webmvc"
 		}
-		compile( libraries.spring_boot_starter_jetty )
 
-		//通用运行依赖
-		//        runtime()
+		compile( libraries.spring_boot_starter_jetty )
+		compile( libraries.spring_boot_starter_jersey )
+
+		compile project(':module-db-jooq')
+		compile project(':module-iam')
 
 		// 测试编译依赖
-		testCompile(libraries.spring_boot_starter_test)
-		testCompile(libraries.spring_test)
-		
-
-		// 测试运行依赖
-		//        testRuntime()
+		//testCompile()
 	}
 }
 
 // 终端用户portal，遵循前后端分离的原则，只包含页面。
-// vue + REST
+// vue
 project(':module-web-portal-vue'){
-	apply plugin: 'eclipse-wtp'
-	apply plugin: 'java'
-	apply plugin: 'war'
+	apply plugin: 'com.moowork.node'
 
-	// java编译版本号
-	sourceCompatibility = 1.8
-	// java运行版本号
-	targetCompatibility = 1.8
+	//node {
+	  // Version of node to use.
+	  //version = '0.11.10'
+	
+	  // Version of npm to use.
+	  //npmVersion = '5.0.1'
+	
+	  // Version of Yarn to use.
+	  //yarnVersion = '0.16.1'
+	
+	  // Base URL for fetching node distributions (change if you have a mirror).
+	  //distBaseUrl = 'https://nodejs.org/dist'
+	
+	  // If true, it will download node using above parameters.
+	  // If false, it will try to use globally installed node.
+	  //download = true
+	
+	  // Set the work directory for unpacking node
+	  //workDir = file("${project.buildDir}/nodejs")
+	
+	  // Set the work directory for NPM
+	  //npmWorkDir = file("${project.buildDir}/npm")
+	
+	  // Set the work directory for Yarn
+	  //yarnWorkDir = file("${project.buildDir}/yarn")
+	
+	  // Set the work directory where node_modules should be located
+	  //nodeModulesDir = file("${project.projectDir}")
+	//}
+	
+	//调用npm run build命令的Gradle任务
+    task npmBuild(type: NpmTask, dependsOn: npmInstall) {
+        group = 'node'
+        args = ['run', 'build']
+    }
+
+    //Gradle的java插件的jar任务，依赖npmBuild,即web子模块打jar包前必须运行npm run build
+    //jar.dependsOn npmBuild
+
+    //调用npm run dev
+    task npmDev(type: NpmTask, dependsOn: npmInstall) {
+        group = 'node'
+        args = ['run', 'dev']
+    }
 }

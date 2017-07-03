@@ -15,10 +15,16 @@ rootProject.name = 'gradle-project-template'
  * Definition of the subprojects.
  */
 
+// DB Module, builded by JOOQ
+include 'module-db-jooq'
+
 // IAM Module
 include 'module-iam'
 
-// Edge Service Module, Restful/Http
+// Edge Service Module, Restful/Http, builded by Dropwizard
+//include 'module-service-rest-dropwizard'
+
+// Edge Service Module, Restful/Http, builded by Spring Boot
 include 'module-service-rest-jersey'
 
 // Web Portal
