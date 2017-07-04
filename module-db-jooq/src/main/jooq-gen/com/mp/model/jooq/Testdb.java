@@ -4,7 +4,7 @@
 package com.mp.model.jooq;
 
 
-import com.mp.model.jooq.tables.InfoUser;
+import com.mp.model.jooq.tables.InfUser;
 import com.mp.model.jooq.tables.SysAuthentication;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Testdb extends SchemaImpl {
 
-    private static final long serialVersionUID = 2017629615;
+    private static final long serialVersionUID = -990431753;
 
     /**
      * The reference instance of <code>testdb</code>
@@ -39,9 +39,9 @@ public class Testdb extends SchemaImpl {
     public static final Testdb TESTDB = new Testdb();
 
     /**
-     * The table <code>testdb.info_user</code>.
+     * The table <code>testdb.inf_user</code>.
      */
-    public final InfoUser INFO_USER = com.mp.model.jooq.tables.InfoUser.INFO_USER;
+    public final InfUser INF_USER = com.mp.model.jooq.tables.InfUser.INF_USER;
 
     /**
      * The table <code>testdb.sys_authentication</code>.
@@ -73,7 +73,7 @@ public class Testdb extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-            InfoUser.INFO_USER,
+            InfUser.INF_USER,
             SysAuthentication.SYS_AUTHENTICATION);
     }
 }

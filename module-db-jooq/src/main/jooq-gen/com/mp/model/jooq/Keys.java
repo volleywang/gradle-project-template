@@ -4,9 +4,9 @@
 package com.mp.model.jooq;
 
 
-import com.mp.model.jooq.tables.InfoUser;
+import com.mp.model.jooq.tables.InfUser;
 import com.mp.model.jooq.tables.SysAuthentication;
-import com.mp.model.jooq.tables.records.InfoUserRecord;
+import com.mp.model.jooq.tables.records.InfUserRecord;
 import com.mp.model.jooq.tables.records.SysAuthenticationRecord;
 
 import javax.annotation.Generated;
@@ -38,7 +38,7 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<InfoUserRecord> KEY_INFO_USER_PRIMARY = UniqueKeys0.KEY_INFO_USER_PRIMARY;
+    public static final UniqueKey<InfUserRecord> KEY_INF_USER_PRIMARY = UniqueKeys0.KEY_INF_USER_PRIMARY;
     public static final UniqueKey<SysAuthenticationRecord> KEY_SYS_AUTHENTICATION_PRIMARY = UniqueKeys0.KEY_SYS_AUTHENTICATION_PRIMARY;
 
     // -------------------------------------------------------------------------
@@ -51,7 +51,7 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     private static class UniqueKeys0 extends AbstractKeys {
-        public static final UniqueKey<InfoUserRecord> KEY_INFO_USER_PRIMARY = createUniqueKey(InfoUser.INFO_USER, "KEY_info_user_PRIMARY", InfoUser.INFO_USER.USER_ID);
+        public static final UniqueKey<InfUserRecord> KEY_INF_USER_PRIMARY = createUniqueKey(InfUser.INF_USER, "KEY_inf_user_PRIMARY", InfUser.INF_USER.USER_ID);
         public static final UniqueKey<SysAuthenticationRecord> KEY_SYS_AUTHENTICATION_PRIMARY = createUniqueKey(SysAuthentication.SYS_AUTHENTICATION, "KEY_sys_authentication_PRIMARY", SysAuthentication.SYS_AUTHENTICATION.AUTH_ID);
     }
 }

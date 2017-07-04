@@ -51,10 +51,89 @@ project(':module-db-jooq'){
 					// includePrimaryKeys('false')
 					// includeUniqueKeys('false') 
 					// includeForeignKeys('false')
+
+
+
 				}
 
 				generate() {
-					deprecated(false)
+					// //@XmlElement(defaultValue = "true")
+					// protected Boolean indexes = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean relations = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean deprecated = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean instanceFields = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean generatedAnnotation = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean routines = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean sequences = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean udts = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean queues = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean links = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean tables = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean records = true;
+					// @XmlElement(defaultValue = "false")
+					pojos('true')
+					// @XmlElement(defaultValue = "false")
+					pojosEqualsAndHashCode('true')
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean pojosToString = true;
+					// @XmlElement(defaultValue = "false")
+					// protected Boolean immutablePojos = false;
+					// @XmlElement(defaultValue = "false")
+					interfaces('true')
+					// @XmlElement(defaultValue = "false")
+					// protected Boolean immutableInterfaces = false;
+					// @XmlElement(defaultValue = "false")
+					daos('true')
+					// @XmlElement(defaultValue = "false")
+					jpaAnnotations('false');
+					// @XmlElement(defaultValue = "false")
+					// protected Boolean validationAnnotations = false;
+					// @XmlElement(defaultValue = "false")
+					// protected Boolean springAnnotations = false;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean globalObjectReferences = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean globalCatalogReferences = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean globalSchemaReferences = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean globalTableReferences = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean globalSequenceReferences = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean globalUDTReferences = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean globalRoutineReferences = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean globalQueueReferences = true;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean globalLinkReferences = true;
+					// @XmlElement(defaultValue = "false")
+					// protected Boolean fluentSetters = false;
+					// @XmlElement(defaultValue = "false")
+					// protected Boolean javaBeansGettersAndSetters = false;
+					// @XmlElement(defaultValue = "true")
+					// protected Boolean varargSetters = true;
+					// @XmlElement(defaultValue = "")
+					// @XmlJavaTypeAdapter(StringAdapter.class)
+					// protected String fullyQualifiedTypes = "";
+					// @XmlElement(defaultValue = "false")
+					// protected Boolean emptyCatalogs = false;
+					// @XmlElement(defaultValue = "false")
+					// protected Boolean emptySchemas = false;
+					// @XmlElement(defaultValue = "false")
+					// protected Boolean javaTimeTypes = false;
 				}
 
 				target() {

@@ -7,6 +7,9 @@ package com.mp.iam.rest;
 
 import java.util.Arrays;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -23,6 +26,8 @@ import org.springframework.context.ApplicationContext;
 @SpringBootApplication
 public class AppStarter {
 
+    @Autowired
+    public static DataSource dataSource;
 	/**
 	 * main:(这里用一句话描述这个方法的作用). <br/>
 	 *
@@ -40,6 +45,10 @@ public class AppStarter {
 		for (String beanName : beanNames) {
 			System.out.println(beanName);
 		}
+		
+		System.out.println("DATASOURCE = " + AppStarter.dataSource);
 	}
+	
+	
 
 }

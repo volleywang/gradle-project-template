@@ -7,7 +7,7 @@ GRANT SELECT ON testdb.* TO test;
 
 
 DROP TABLE IF EXISTS `sys_authentication`;
-DROP TABLE IF EXISTS `info_user`;
+DROP TABLE IF EXISTS `inf_user`;
 
 CREATE TABLE `sys_authentication` (
     `auth_id` int NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `sys_authentication` (
     CONSTRAINT pk_sys_authentication PRIMARY KEY (`auth_id`)
 );
 
-CREATE TABLE `info_user` (
+CREATE TABLE `inf_user` (
     `user_id` int NOT NULL,
     `user_name` varchar(255) NOT NULL,
     `nick_name` varchar(255) DEFAULT NULL,
@@ -27,5 +27,5 @@ CREATE TABLE `info_user` (
     `mobile_number` varchar(255) DEFAULT NULL,
 
 
-    CONSTRAINT pk_info_user PRIMARY KEY (`user_id`)
+    CONSTRAINT pk_inf_user PRIMARY KEY (`user_id`)
 );

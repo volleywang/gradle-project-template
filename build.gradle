@@ -91,7 +91,9 @@ configure(subprojects - project(':module-web-portal-vue')) {subproject ->
 	dependencies {
 		// 通用编译依赖
 		compile( libraries.spring_boot_starter_logging )
-		compile( libraries.spring_boot_starter_jooq )
+		compile( libraries.spring_boot_starter_jooq ){ 
+		    exclude module: "spring-boot-starter-jdbc" 
+		}
 
 		// 测试编译依赖
 		testCompile(libraries.spring_boot_starter_test)
@@ -125,6 +127,7 @@ project(':module-db-jooq'){
 		compile( libraries.spring_boot_starter_jdbc ){ 
 		    exclude module: "tomcat-jdbc" 
 		}
+
 		compile( libraries.hikariCP )
 		compile( libraries.jooq_codegen )
 

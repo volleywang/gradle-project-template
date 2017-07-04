@@ -15,6 +15,7 @@ spring:
   jooq:
     sql-dialect: MYSQL
   datasource:
+    type: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.jdbc.Driver
     username: test
     password: test
@@ -37,7 +38,6 @@ spring:
       # This setting only applies when minimumIdle is defined to be less than maximumPoolSize. 
       # The minimum allowed value is 10000ms (10 seconds). Default: 600000 (10 minutes)
       idleTimeout: 300000
-
 
       # MySql特有DataSource配置
       # 参考http://assets.en.oreilly.com/1/event/21/Connector_J%20Performance%20Gems%20Presentation.pdf
