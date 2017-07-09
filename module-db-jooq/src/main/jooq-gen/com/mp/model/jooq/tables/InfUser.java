@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class InfUser extends TableImpl<InfUserRecord> {
 
-    private static final long serialVersionUID = 239231493;
+    private static final long serialVersionUID = 752243924;
 
     /**
      * The reference instance of <code>testdb.inf_user</code>
@@ -52,7 +52,7 @@ public class InfUser extends TableImpl<InfUserRecord> {
     /**
      * The column <code>testdb.inf_user.user_id</code>.
      */
-    public final TableField<InfUserRecord, Integer> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<InfUserRecord, String> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.CHAR.length(32).nullable(false), this, "");
 
     /**
      * The column <code>testdb.inf_user.user_name</code>.

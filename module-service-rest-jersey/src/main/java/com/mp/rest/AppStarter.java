@@ -3,7 +3,7 @@
  * Date:2017年6月11日下午5:32:51
  * Copyright (c) 2017, All Rights Reserved.
  */
-package com.mp.iam.rest;
+package com.mp.rest;
 
 import java.util.Arrays;
 
@@ -25,9 +25,6 @@ import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
 public class AppStarter {
-
-    @Autowired
-    public static DataSource dataSource;
 	/**
 	 * main:(这里用一句话描述这个方法的作用). <br/>
 	 *
@@ -45,10 +42,6 @@ public class AppStarter {
 		for (String beanName : beanNames) {
 			System.out.println(beanName);
 		}
-		
-		System.out.println("DATASOURCE = " + AppStarter.dataSource);
 	}
-	
-	
 
 }

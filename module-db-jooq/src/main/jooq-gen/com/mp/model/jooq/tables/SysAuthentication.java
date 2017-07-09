@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SysAuthentication extends TableImpl<SysAuthenticationRecord> {
 
-    private static final long serialVersionUID = 1573925736;
+    private static final long serialVersionUID = 2090413063;
 
     /**
      * The reference instance of <code>testdb.sys_authentication</code>
@@ -52,7 +52,7 @@ public class SysAuthentication extends TableImpl<SysAuthenticationRecord> {
     /**
      * The column <code>testdb.sys_authentication.auth_id</code>.
      */
-    public final TableField<SysAuthenticationRecord, Integer> AUTH_ID = createField("auth_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<SysAuthenticationRecord, String> AUTH_ID = createField("auth_id", org.jooq.impl.SQLDataType.CHAR.length(32).nullable(false), this, "");
 
     /**
      * The column <code>testdb.sys_authentication.auth_code</code>.

@@ -11,15 +11,6 @@ buildscript {
 }
 
 project(':module-db-jooq'){
-	// 自动生成的代码单独放在一个代码目录
-	sourceSets {
-		main {
-			java {
-				srcDirs += ['src/main/jooq-gen']
-			}
-		}
-	}
-
 	//使用 JOOQ 从数据库表生成 model 类
 	task genCode << {
 		def writer = new StringWriter()
@@ -41,6 +32,7 @@ project(':module-db-jooq'){
 				database() {
 					name('org.jooq.util.mysql.MySQLDatabase')
 					inputSchema('testdb')
+					outputSchema('testdb')
 					includes('.*')
 
 					// includeTables('true') 
@@ -51,9 +43,6 @@ project(':module-db-jooq'){
 					// includePrimaryKeys('false')
 					// includeUniqueKeys('false') 
 					// includeForeignKeys('false')
-
-
-
 				}
 
 				generate() {
@@ -79,34 +68,27 @@ project(':module-db-jooq'){
 					// protected Boolean links = true;
 					// @XmlElement(defaultValue = "true")
 					// protected Boolean tables = true;
-					// @XmlElement(defaultValue = "true")
+					tables('true')
 					// protected Boolean records = true;
-					// @XmlElement(defaultValue = "false")
 					pojos('true')
-					// @XmlElement(defaultValue = "false")
 					pojosEqualsAndHashCode('true')
 					// @XmlElement(defaultValue = "true")
 					// protected Boolean pojosToString = true;
 					// @XmlElement(defaultValue = "false")
 					// protected Boolean immutablePojos = false;
-					// @XmlElement(defaultValue = "false")
-					interfaces('true')
-					// @XmlElement(defaultValue = "false")
+					interfaces('false')
 					// protected Boolean immutableInterfaces = false;
-					// @XmlElement(defaultValue = "false")
 					daos('true')
-					// @XmlElement(defaultValue = "false")
-					jpaAnnotations('false');
+					jpaAnnotations('false')
 					// @XmlElement(defaultValue = "false")
 					// protected Boolean validationAnnotations = false;
-					// @XmlElement(defaultValue = "false")
-					// protected Boolean springAnnotations = false;
+					springAnnotations('true')
 					// @XmlElement(defaultValue = "true")
 					// protected Boolean globalObjectReferences = true;
-					// @XmlElement(defaultValue = "true")
 					// protected Boolean globalCatalogReferences = true;
-					// @XmlElement(defaultValue = "true")
+					globalCatalogReferences('false')
 					// protected Boolean globalSchemaReferences = true;
+					globalSchemaReferences('false')
 					// @XmlElement(defaultValue = "true")
 					// protected Boolean globalTableReferences = true;
 					// @XmlElement(defaultValue = "true")

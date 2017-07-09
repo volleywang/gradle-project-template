@@ -1,20 +1,21 @@
 server:
-  port: 9090  #HTTP/HTTPS Server端口
+  port: 8080  #HTTP/HTTPS Server端口
   connection-timeout: 10000 # Time in milliseconds that connectors will wait for another HTTP request before closing the connection. When not set, the connector's container-specific default will be used. Use a value of -1 to indicate no (i.e. infinite) timeout.
+  context-path: /test # Context path of the application.
   session: 
     timeout: 300 # Session timeout in seconds.
   
-  compression: 
-    enabled: true # If response compression is enabled.
-    min-response-size: 2048 # Minimum response size that is required for compression to be performed. For instance 2048
+  #compression: 
+  #  enabled: false # If response compression is enabled.
+  #  min-response-size: 2048 # Minimum response size that is required for compression to be performed. For instance 2048
 
-  error: 
-    include-stacktrace: never # When to include a "stacktrace" attribute.
-    path: ./log/error # Path of the error controller.
+  # error: 
+  #   include-stacktrace: never # When to include a "stacktrace" attribute.
+  #   path: /spring-boot/error # Path of the error controller.
   
   tomcat: 
     accept-count: 400 # Maximum queue length for incoming connection requests when all possible request processing threads are in use.
-    server.tomcat.basedir: ./tomcat # Tomcat base directory. If not specified a temporary directory will be used.
+    server.tomcat.basedir: ./tomcat-http # Tomcat base directory. If not specified a temporary directory will be used.
     max-connections: 200 # Maximum number of connections that the server will accept and process at any given time.
     max-threads: 10 # Maximum amount of worker threads.
     min-spare-threads: 10 # Minimum amount of worker threads.
@@ -45,8 +46,8 @@ server:
 # server.ssl.trust-store-provider= # Provider for the trust store.
 # server.ssl.trust-store-type= # Type of the trust store.
 spring:
-  profiles:
-    active: development
+  #profiles:
+    #active: development
     #active: test
     #active: production
   
@@ -58,6 +59,10 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     name: testDB    # Name of the datasource.
     initialize: false # Populate the database using 'data.sql'.
+    url: jdbc:mysql://127.0.0.1:3308/testdb?useSSL=false&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+    driver-class-name: com.mysql.jdbc.Driver
+    username: test
+    password: test
     
     hikari:
       # 自定义数据连接池的名字
@@ -91,32 +96,9 @@ spring:
       elideSetAutoCommits: true
       maintainTimeStats: false
 
----
-# 开发环境配置
-spring:
-  profiles: development
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3308/testdb?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
-    driver-class-name: com.mysql.jdbc.Driver
-    username: test
-    password: test
-
----
-# 测试环境配置
-spring:
-  profiles: test
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3308/testdb?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
-    driver-class-name: com.mysql.jdbc.Driver
-    username: test
-    password: test
-
----
-# 生产环境配置
-spring:
-  profiles: production
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3308/testdb?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
-    driver-class-name: com.mysql.jdbc.Driver
-    username: test
-    password: test
+  jersey:
+    #application-path: /rest # Path that serves as the base URI for the application. Overrides the value of "@ApplicationPath" if specified.
+    #filter.order=0 # Jersey filter chain order.
+    #init.*= # Init parameters to pass to Jersey via the servlet or filter.
+    #servlet.load-on-startup=-1 # Load on startup priority of the Jersey servlet.
+    #type=servlet # Jersey integration type.

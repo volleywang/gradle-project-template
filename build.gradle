@@ -52,6 +52,15 @@ allprojects{
 configure(subprojects - project(':module-web-portal-vue')) {subproject ->
 	apply plugin: 'java'
 
+	// 自动生成的代码单独放在一个代码目录
+	sourceSets {
+		main {
+			java {
+				srcDirs += ['src/main/jooq-gen']
+			}
+		}
+	}
+
 	jar {
 		baseName = subproject.name
 
@@ -127,30 +136,25 @@ project(':module-db-jooq'){
 		compile( libraries.spring_boot_starter_jdbc ){ 
 		    exclude module: "tomcat-jdbc" 
 		}
-
-		compile( libraries.hikariCP )
 		compile( libraries.jooq_codegen )
-
 
         //通用运行依赖
         runtime( libraries.mysql_jdbc )
+		compile( libraries.hikariCP )
     }
 }
 
 // 边界服务组件，主要涉及模块或组建对外开放服务的能力构建
-// Spring-Boot + jetty + jersey
+// Spring-Boot + tomcat + jersey
 project(':module-service-rest-jersey'){
+	//apply plugin: 'eclipse-wtp'
+	//apply plugin: 'war'
 	apply plugin: 'org.springframework.boot'
 
 	dependencies {
 		// 通用编译依赖
-		compile( libraries.spring_boot_starter_web ){ 
-		    exclude module: "spring-boot-starter-tomcat" 
-		    //exclude module: "spring-web"
-		    //exclude module: "spring-webmvc"
-		}
-
-		compile( libraries.spring_boot_starter_jetty )
+		compile( libraries.spring_boot_starter_tomcat )
+		//compile( libraries.spring_boot_starter_jetty )
 		compile( libraries.spring_boot_starter_jersey )
 
 		compile project(':module-db-jooq')

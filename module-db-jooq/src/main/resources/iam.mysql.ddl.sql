@@ -1,16 +1,10 @@
-create database testdb;
-
-CREATE USER name IDENTIFIED BY 'test';
-SET PASSWORD FOR name=PASSWORD('test');
-
-GRANT SELECT ON testdb.* TO test;
 
 
 DROP TABLE IF EXISTS `sys_authentication`;
 DROP TABLE IF EXISTS `inf_user`;
 
 CREATE TABLE `sys_authentication` (
-    `auth_id` int NOT NULL,
+    `auth_id` char(32) NOT NULL,
     `auth_code` varchar(255) NOT NULL,
     `password` varchar(255) NOT NULL,
 
@@ -18,7 +12,7 @@ CREATE TABLE `sys_authentication` (
 );
 
 CREATE TABLE `inf_user` (
-    `user_id` int NOT NULL,
+    `user_id` char(32) NOT NULL,
     `user_name` varchar(255) NOT NULL,
     `nick_name` varchar(255) DEFAULT NULL,
     `first_name` varchar(255) DEFAULT NULL,
